@@ -1,0 +1,10 @@
+streamlit
+tornado
+opencv-python
+ultralytics
+numpy
+scipy
+filterpy
+lap
+streamlit-webrtc
+av

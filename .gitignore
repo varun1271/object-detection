@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+
+# Virtual environments
+venv/
+env/
+.env
+.venv/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Screenshots saved by the app
+screenshot_*.jpg
+
+# Model weights — downloaded automatically at runtime via ultralytics
+yolov8n.pt
+*.pt
+*.pth
+
+# OS
+.DS_Store
+Thumbs.db
