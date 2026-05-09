@@ -1,6 +1,6 @@
 streamlit
 tornado
-opencv-python
+opencv-python-headless
 ultralytics
 numpy
 scipy
