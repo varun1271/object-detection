@@ -903,15 +903,21 @@ def main() -> None:
         webcam_health = "SNAPSHOT"
         webcam_message = "WebRTC is unavailable in this environment. Using browser camera snapshot fallback."
 
-    metric_columns = st.columns(4)
-    with metric_columns[0]:
-        render_metric_card("FPS", f"{float(stats['fps']):0.1f}", "#63e6ff")
-    with metric_columns[1]:
-        render_metric_card("Detected Objects", str(stats["total_objects"]), "#7effa9")
-    with metric_columns[2]:
-        render_metric_card("Active Tracks", str(stats["active_tracks"]), "#ff9ef3")
-    with metric_columns[3]:
-        render_metric_card("Webcam Status", webcam_health, "#ffc66d")
+    metrics_placeholder = st.empty()
+
+    def render_metrics(current_stats: dict[str, object], health: str) -> None:
+        with metrics_placeholder.container():
+            metric_columns = st.columns(4)
+            with metric_columns[0]:
+                render_metric_card("FPS", f"{float(current_stats['fps']):0.1f}", "#63e6ff")
+            with metric_columns[1]:
+                render_metric_card("Detected Objects", str(current_stats["total_objects"]), "#7effa9")
+            with metric_columns[2]:
+                render_metric_card("Active Tracks", str(current_stats["active_tracks"]), "#ff9ef3")
+            with metric_columns[3]:
+                render_metric_card("Webcam Status", health, "#ffc66d")
+
+    render_metrics(stats, webcam_health)
 
     left_col, right_col = st.columns([3.25, 1.2])
     with left_col:
@@ -998,6 +1004,16 @@ def main() -> None:
         """,
         unsafe_allow_html=True,
     )
+
+    if ctx and ctx.state.playing:
+        while True:
+            if ctx.video_processor:
+                try:
+                    current_stats = ctx.video_processor.stats.snapshot()
+                    render_metrics(current_stats, "LIVE")
+                except Exception:
+                    pass
+            time.sleep(0.1)
 
 
 if __name__ == "__main__":
